@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using TransportesArenas.DeliveryManager.Backend.Implementations;
-using TransportesArenas.DeliveryManager.Backend.Implementations.PdfManager;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
 
 namespace TransportesArenas.DelivaryManager.Backend.Test

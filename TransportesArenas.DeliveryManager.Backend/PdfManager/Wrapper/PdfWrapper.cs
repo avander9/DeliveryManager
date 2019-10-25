@@ -53,18 +53,14 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         /// <inheritdoc />
         public async Task SplitAndSaveAsync(string outputFile, int pageNumber)
         {
-            await Task.Run(() =>
-                 {
-                     using (var document = new Document())
-                     {
-                         document.Open();
+            Task.WaitAll();
 
-                         using (var copy = new PdfCopy(document, new FileStream(outputFile, FileMode.Create)))
-                         {
-                             copy.AddPage(copy.GetImportedPage(reader, pageNumber));
-                         }
-                     }
-                 });
+            using (var document = new Document())
+            {
+                var copy = new PdfCopy(document, new FileStream(outputFile, FileMode.Create));
+                document.Open();
+                copy.AddPage(copy.GetImportedPage(reader, pageNumber));
+            }
 
         }
 

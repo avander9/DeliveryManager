@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
 
-namespace TransportesArenas.DeliveryManager.Backend.Implementations.PdfManager
+namespace TransportesArenas.DeliveryManager.Backend.Implementations
 {
     public class PdfManager: IPdfManager
     {

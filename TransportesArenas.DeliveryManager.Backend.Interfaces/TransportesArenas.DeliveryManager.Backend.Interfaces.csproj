@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Entities\IDelivery.cs" />
     <Compile Include="ExcelReader\IExcelReader.cs" />
+    <Compile Include="IDelivaryManagerProcessRequest.cs" />
+    <Compile Include="IDeliveryProcessManager.cs" />
     <Compile Include="PdfManager\IPdfManager.cs" />
     <Compile Include="PdfManager\Wrapper\IPdfWrapper.cs" />
     <Compile Include="PdfManager\Results\IPdfResult.cs" />

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using OfficeOpenXml;
-using TransportesArenas.DeliveryManager.Backend.Implementations.Entities;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
 
 namespace TransportesArenas.DeliveryManager.Backend.Implementations
@@ -20,7 +19,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
                 var rows = worksheet.Dimension.Rows;
 
-                for (var row = 1; row <= rows; row++)
+                for (var row = 2; row <= rows; row++)
                 {
                     var delivery = new Delivery();
 
