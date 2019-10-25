@@ -8,6 +8,6 @@ namespace TransportesArenas.DeliveryManager.Backend.Interfaces
         IPdfWrapper SetFile(string filePath);
         Task<string> ReadPage(int pageNumber);
         Task<IPdfResult> FindValueAsync(string value);
-        Task SplitAndSaveAsync(string outputFile, int pageNumber);
+        void SplitAndSave(string outputFile, int pageNumber);
     }
 }

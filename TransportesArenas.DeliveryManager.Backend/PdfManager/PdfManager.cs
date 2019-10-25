@@ -29,7 +29,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             if (result.Found)
             {
                 var fileName = Path.Combine(this.GetDriverFolder(driverName), deliveryNumber + ".pdf");
-                await this.pdfWrapper.SplitAndSaveAsync(fileName, result.Page).ConfigureAwait(false);
+                this.pdfWrapper.SplitAndSave(fileName, result.Page);
             }
         }
 
@@ -45,7 +45,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
         private string BuildDriverFolder(string driverName)
         {
-            return Path.Combine(this.destinationFolder, driverName);
+            return Path.Combine(this.destinationFolder, driverName.ToUpper());
         }
     }
 }
