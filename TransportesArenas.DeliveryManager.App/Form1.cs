@@ -80,7 +80,11 @@ namespace TransportesArenas.DeliveryManager.App
             deliveryProcessManager.TotalDeliveriesEvent += this.DeliveryProcessManager_TotalDeliveriesEvent;
             deliveryProcessManager.StepEvent += DeliveryProcessManagerOnStepEvent;
 
-            Task.Run(() => { deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true); }).ConfigureAwait(true);
+            Task.Run(() =>
+            {
+                deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true); 
+
+            }).ConfigureAwait(true);
            
 
         }
