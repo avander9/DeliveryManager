@@ -42,7 +42,7 @@ namespace TransportesArenas.DelivaryManager.Backend.Test
             await this.manager.ProcessDelivery("TestDeliveryNumber", "TestDriver").ConfigureAwait(false);
 
             await this.wrapper.Received().FindValueAsync("TestDeliveryNumber").ConfigureAwait(false);
-            await this.wrapper.Received().SplitAndSave(fileName, 1).ConfigureAwait(false);
+            this.wrapper.Received().SplitAndSave(fileName, 1);
         }
     }
 }

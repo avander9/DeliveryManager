@@ -40,7 +40,7 @@
             this.buttonPdf = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.buttonProcess = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.labelProcess = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -132,19 +132,20 @@
             this.buttonProcess.UseVisualStyleBackColor = true;
             this.buttonProcess.Click += new System.EventHandler(this.buttonProcess_Click);
             // 
-            // progressBar1
+            // labelProcess
             // 
-            this.progressBar1.Location = new System.Drawing.Point(2, 192);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(478, 23);
-            this.progressBar1.TabIndex = 10;
+            this.labelProcess.AutoSize = true;
+            this.labelProcess.Location = new System.Drawing.Point(324, 186);
+            this.labelProcess.Name = "labelProcess";
+            this.labelProcess.Size = new System.Drawing.Size(0, 13);
+            this.labelProcess.TabIndex = 11;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 218);
-            this.Controls.Add(this.progressBar1);
+            this.ClientSize = new System.Drawing.Size(483, 204);
+            this.Controls.Add(this.labelProcess);
             this.Controls.Add(this.buttonProcess);
             this.Controls.Add(this.buttonPdf);
             this.Controls.Add(this.buttonOutput);
@@ -176,7 +177,7 @@
         private System.Windows.Forms.Button buttonPdf;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button buttonProcess;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label labelProcess;
     }
 }
 

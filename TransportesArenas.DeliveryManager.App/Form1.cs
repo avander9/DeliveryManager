@@ -14,6 +14,10 @@ namespace TransportesArenas.DeliveryManager.App
 {
     public partial class Form1 : Form
     {
+        private delegate void SafeCallDelegate(string text);
+        private delegate void EmptyDelegate();
+        private int TotalDeliveries;
+        private int DeliveriesProcessed;
         public Form1()
         {
             InitializeComponent();
@@ -63,6 +67,8 @@ namespace TransportesArenas.DeliveryManager.App
             if (!IsValid())
                 MessageBox.Show("Informa los campos");
 
+            DeliveriesProcessed = 0;
+
             var resquest = new DelivaryManagerProcessRequest
             {
                 ExcelFile = this.textBoxExcel.Text,
@@ -71,8 +77,37 @@ namespace TransportesArenas.DeliveryManager.App
             };
 
             IDeliveryProcessManager deliveryProcessManager = new DeliveryProcessManager();
-            Task.Run(() => { deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true); });
+            deliveryProcessManager.TotalDeliveriesEvent += this.DeliveryProcessManager_TotalDeliveriesEvent;
+            deliveryProcessManager.StepEvent += DeliveryProcessManagerOnStepEvent;
 
+            Task.Run(() => { deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true); }).ConfigureAwait(true);
+           
+
+        }
+
+        private void DeliveryProcessManagerOnStepEvent()
+        {
+            DeliveriesProcessed++;
+            WriteTextSafe($"{DeliveriesProcessed} / {TotalDeliveries}");
+
+        }
+
+        private void WriteTextSafe(string text)
+        {
+            if (labelProcess.InvokeRequired)
+            {
+                var d = new SafeCallDelegate(WriteTextSafe);
+                labelProcess.Invoke(d, text);
+            }
+            else
+            {
+                labelProcess.Text = text;
+            }
+        }
+
+        private void DeliveryProcessManager_TotalDeliveriesEvent(int deliveries)
+        {
+            this.TotalDeliveries = deliveries;
         }
 
         private bool IsValid()
