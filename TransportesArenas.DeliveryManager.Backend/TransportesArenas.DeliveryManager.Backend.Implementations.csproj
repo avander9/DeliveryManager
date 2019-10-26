@@ -63,6 +63,7 @@
     <Compile Include="ExcelReader\ExcelReader.cs" />
     <Compile Include="IoC\IoCBuilder.cs" />
     <Compile Include="PdfManager\PdfManager.cs" />
+    <Compile Include="PdfManager\Wrapper\PdfCache.cs" />
     <Compile Include="PdfManager\Wrapper\PdfWrapper.cs" />
     <Compile Include="PdfManager\Results\PdfResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

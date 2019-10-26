@@ -13,7 +13,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         {
             this.destinationFolder = destinationFolder;
             this.pdfWrapper = new PdfWrapper()
-                .SetFile(pdfSourceFile);
+                .Build(pdfSourceFile);
         }
 
         public PdfManager(IPdfWrapper wrapper, string destinationFolder)
@@ -22,9 +22,9 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             this.pdfWrapper = wrapper;
         }
 
-        public async Task ProcessDelivery(string deliveryNumber, string driverName)
+        public void ProcessDelivery(string deliveryNumber, string driverName)
         {
-            var result = await this.pdfWrapper.FindValueAsync(deliveryNumber).ConfigureAwait(false);
+            var result = this.pdfWrapper.FindValueAsync(deliveryNumber);
 
             if (result.Found)
             {

@@ -46,6 +46,7 @@
     <Compile Include="IDelivaryManagerProcessRequest.cs" />
     <Compile Include="IDeliveryProcessManager.cs" />
     <Compile Include="PdfManager\IPdfManager.cs" />
+    <Compile Include="PdfManager\Wrapper\IPdfCache.cs" />
     <Compile Include="PdfManager\Wrapper\IPdfWrapper.cs" />
     <Compile Include="PdfManager\Results\IPdfResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

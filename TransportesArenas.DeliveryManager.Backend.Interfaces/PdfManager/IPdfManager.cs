@@ -4,6 +4,6 @@ namespace TransportesArenas.DeliveryManager.Backend.Interfaces
 {
     public interface IPdfManager
     {
-        Task ProcessDelivery(string deliveryNumber, string driverName);
+        void ProcessDelivery(string deliveryNumber, string driverName);
     }
 }

@@ -11,15 +11,23 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
         public async Task RunAsync(IDelivaryManagerProcessRequest request)
         {
-            var deliveries = await new ExcelReader().GetDeliveriesAsync(request.ExcelFile).ConfigureAwait(true);
-            this.OnTotalDeliveriesEvent(deliveries.Count);
-
-            var pdfManager = new PdfManager(request.PdfFile, request.OutputFolder);
-
-            foreach (var delivery in deliveries)
+            try
             {
-                this.OnStepEvent();
-                await pdfManager.ProcessDelivery(delivery.DeliveryReference, delivery.DriverName).ConfigureAwait(false);
+                var deliveries = await new ExcelReader().GetDeliveriesAsync(request.ExcelFile).ConfigureAwait(true);
+                this.OnTotalDeliveriesEvent(deliveries.Count);
+
+                var pdfManager = new PdfManager(request.PdfFile, request.OutputFolder);
+
+                foreach (var delivery in deliveries)
+                {
+                    this.OnStepEvent();
+                    pdfManager.ProcessDelivery(delivery.DeliveryReference, delivery.DriverName);
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
             }
         }
 

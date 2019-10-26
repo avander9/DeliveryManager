@@ -24,9 +24,9 @@ namespace TransportesArenas.DelivaryManager.Backend.Test
         {
             this.wrapper.FindValueAsync(Arg.Any<string>()).Returns(x => new PdfResult());
 
-            await this.manager.ProcessDelivery("TestDelivery", "TestDriver").ConfigureAwait(false);
+            this.manager.ProcessDelivery("TestDelivery", "TestDriver");
 
-            await this.wrapper.Received().FindValueAsync("TestDelivery").ConfigureAwait(false);
+            this.wrapper.Received().FindValueAsync("TestDelivery");
         }
 
         [TestMethod]
@@ -39,9 +39,9 @@ namespace TransportesArenas.DelivaryManager.Backend.Test
                 Page = 1
             });
 
-            await this.manager.ProcessDelivery("TestDeliveryNumber", "TestDriver").ConfigureAwait(false);
+            this.manager.ProcessDelivery("TestDeliveryNumber", "TestDriver");
 
-            await this.wrapper.Received().FindValueAsync("TestDeliveryNumber").ConfigureAwait(false);
+            this.wrapper.Received().FindValueAsync("TestDeliveryNumber");
             this.wrapper.Received().SplitAndSave(fileName, 1);
         }
     }

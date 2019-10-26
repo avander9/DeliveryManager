@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,42 +13,42 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
     public class PdfWrapper : IPdfWrapper
     {
         private PdfReader reader;
+        private List<IPdfCache> cache;
 
-        public IPdfWrapper SetFile(string filePath)
+        public IPdfWrapper Build(string filePath)
         {
             this.reader = new PdfReader(filePath);
+            this.cache = new List<IPdfCache>();
+            this.LoadCache();
             return this;
         }
 
         /// <inheritdoc />
-        public async Task<string> ReadPage(int pageNumber)
+        public string ReadPage(int pageNumber)
         {
-            var textFromPage = PdfTextExtractor.GetTextFromPage(reader, pageNumber);
+            var textFromPage = PdfTextExtractor.GetTextFromPage(this.reader, pageNumber);
 
             textFromPage = Encoding.UTF8.GetString(Encoding.Convert(Encoding.Default,
                 Encoding.UTF8,
                 Encoding.Default.GetBytes(textFromPage)));
 
-            return await Task.FromResult(textFromPage);
+            return textFromPage;
         }
 
         /// <inheritdoc />
-        public async Task<IPdfResult> FindValueAsync(string value)
+        public IPdfResult FindValueAsync(string value)
         {
-            var result = new PdfResult();
-            for (var pageNumber = 1; pageNumber <= reader.NumberOfPages; pageNumber++)
+            var pdfResult = new PdfResult();
+
+            var pdfCache = this.cache.Find(x => x.Content.Contains(value));
+
+            if (pdfCache != null)
             {
-                var pageContent = await this.ReadPage(pageNumber).ConfigureAwait(true);
-
-                if (!pageContent.Contains(value))
-                    continue;
-
-                result.Found = true;
-                result.Page = pageNumber;
-                return result;
+                pdfResult.Found = true;
+                pdfResult.Page = pdfCache.Page;
             }
 
-            return result;
+            return pdfResult;
         }
 
         /// <inheritdoc />
@@ -61,9 +62,24 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             }
         }
 
+        private void LoadCache()
+        {
+            for (int page = 1; page < reader.NumberOfPages; page++)
+            {
+                var content = this.ReadPage(page);
+
+                this.cache.Add(new PdfCache
+                {
+                    Content = content,
+                    Page = page
+                });
+            }
+        }
+
         public void Dispose()
         {
-            reader?.Dispose();
+            this.reader?.Dispose();
+            this.cache.Clear();
         }
     }
 }
