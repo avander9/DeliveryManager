@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using TransportesArenas.DeliveryManager.Backend.Implementations;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
@@ -20,7 +19,7 @@ namespace TransportesArenas.DelivaryManager.Backend.Test
         }
 
         [TestMethod]
-        public async Task ProcessDelivery_DeliveryNotFound()
+        public void ProcessDelivery_DeliveryNotFound()
         {
             this.wrapper.FindValueAsync(Arg.Any<string>()).Returns(x => new PdfResult());
 
@@ -30,7 +29,7 @@ namespace TransportesArenas.DelivaryManager.Backend.Test
         }
 
         [TestMethod]
-        public async Task ProcessDelivery_DeliveryFound()
+        public void ProcessDelivery_DeliveryFound()
         {
             var fileName = @"c:\test\TestDriver\TestDeliveryNumber.pdf";
             this.wrapper.FindValueAsync(Arg.Any<string>()).Returns(x => new PdfResult
