@@ -41,10 +41,11 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
         protected override void PrintContent()
         {
-            this.CurrentColumn = 1;
-            this.CurrentRow = 1;
             foreach (var item in this.deliveries)
             {
+                this.CurrentColumn = 1;
+                this.CurrentRow++;
+
                 this.worksheet.SetValue(this.CurrentRow, this.CurrentColumn, item.PickUpDate.ToShortDateString());
                 this.CurrentColumn++;
 
@@ -67,8 +68,6 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
                 this.CurrentColumn++;
 
                 this.worksheet.SetValue(this.CurrentRow, this.CurrentColumn, item.Weight);
-
-                this.CurrentRow++;
             }
         }
 

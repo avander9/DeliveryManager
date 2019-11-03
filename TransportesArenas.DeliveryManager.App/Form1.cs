@@ -99,7 +99,7 @@ namespace TransportesArenas.DeliveryManager.App
         private void DeliveryProcessManagerOnStepEvent()
         {
             DeliveriesProcessed++;
-            WriteTextSafe($"{DeliveriesProcessed} / {TotalDeliveries}");
+            this.WriteTextSafe($"{DeliveriesProcessed} / {TotalDeliveries}");
 
         }
 

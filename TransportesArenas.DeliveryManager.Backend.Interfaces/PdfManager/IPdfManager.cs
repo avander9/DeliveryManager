@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace TransportesArenas.DeliveryManager.Backend.Interfaces
 {
-    public interface IPdfManager
+    public interface IPdfManager: IDisposable
     {
-        void ProcessDelivery(string deliveryNumber, string driverName);
+        bool ProcessDelivery(string deliveryNumber, string driverName);
     }
 }
