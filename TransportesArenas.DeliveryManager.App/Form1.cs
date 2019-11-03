@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ namespace TransportesArenas.DeliveryManager.App
         public Form1()
         {
             InitializeComponent();
+            this.Text = $@"T.A Delivery Manager {Assembly.GetExecutingAssembly().GetName().Version}";
             this.openFileDialog1 = new OpenFileDialog();
             this.folderBrowserDialog1 = new FolderBrowserDialog();
         }
