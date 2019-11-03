@@ -47,6 +47,8 @@
     <Compile Include="ExcelManagement\Reporting\DeliveriesMissingReport\IDelireviesMissingReportExcelGenerator.cs" />
     <Compile Include="IDelivaryManagerProcessRequest.cs" />
     <Compile Include="IDeliveryProcessManager.cs" />
+    <Compile Include="LogManager\IDeliveryManagerLogger.cs" />
+    <Compile Include="LogManager\LogType.cs" />
     <Compile Include="PdfManager\IPdfManager.cs" />
     <Compile Include="PdfManager\Wrapper\IPdfCache.cs" />
     <Compile Include="PdfManager\Wrapper\IPdfWrapper.cs" />

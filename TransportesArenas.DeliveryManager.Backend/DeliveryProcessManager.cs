@@ -13,31 +13,33 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
     {
         private IPdfManager pdfManager;
         private DelireviesMissingReportExcelGenerator reportExcelGenerator;
+        private readonly IDeliveryManagerLogger logger;
         public event TotalDeliveriesEvent TotalDeliveriesEvent;
         public event StepEvent StepEvent;
         public event ProcessEndedEvent ProcessEndedEvent;
-        private ILog logger;
+        
+        public DeliveryProcessManager()
+        {
+            this.logger = new DeliveryManagerLogger().Build();
+        }
 
         public async Task RunAsync(IDelivaryManagerProcessRequest request)
         {
             try
             {
-                this.logger = LogManager.GetLogger(typeof(DeliveryProcessManager));
-                //GlobalContext.Properties["LogFileName"] = $"Log-{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}";
-                XmlConfigurator.Configure();
-                this.logger.Info("Iniciando Proceso");
+                this.logger.LogMessage("Iniciando Proceso");
 
                 var deliveries = await new ExcelReader()
                     .GetDeliveriesAsync(request.ExcelFile)
                     .ConfigureAwait(true);
-                this.logger.Info($"{deliveries.Count} albaranes leídos desde excel");
+                this.logger.LogMessage($"{deliveries.Count} albaranes leídos desde excel");
 
                 var deliveriesNotProcessed = new List<IDelivery>();
                 this.OnTotalDeliveriesEvent(deliveries.Count);
 
                 this.pdfManager = new PdfManager(request.PdfFile, request.OutputFolder);
 
-                this.logger.Info("Empezamos a procesar albaranes");
+                this.logger.LogMessage("Empezamos a procesar albaranes");
                 foreach (var delivery in deliveries)
                 {
                     this.OnStepEvent();
@@ -45,7 +47,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
                     if (!processed)
                     {
-                        this.logger.Info($"Albarán {delivery.DeliveryReference} No encontrado");
+                        this.logger.LogMessage($"Albarán {delivery.DeliveryReference} No encontrado");
                         deliveriesNotProcessed.Add(delivery);
                     }
                 }
@@ -55,16 +57,17 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
                     this.GenerateReport(request.OutputFolder, deliveriesNotProcessed);
 
                 this.OnProcessEndedEvent();
+                this.logger.LogMessage("Proceso Finalizado");
             }
             catch (Exception exception)
             {
-                this.logger.Error(exception.Message, exception);
+                this.logger.LogException(exception.Message, exception);
             }
         }
 
         private void GenerateReport(string requestOutputFolder, List<IDelivery> deliveriesNotProcessed)
         {
-            this.logger.Info("Generando Reporte");
+            this.logger.LogMessage("Generando Reporte");
             var outputFile = Path.Combine(requestOutputFolder, GetNotProcessedExcelFileName());
             this.reportExcelGenerator = new DelireviesMissingReportExcelGenerator();
             this.reportExcelGenerator.GenerateReport(outputFile, deliveriesNotProcessed);
