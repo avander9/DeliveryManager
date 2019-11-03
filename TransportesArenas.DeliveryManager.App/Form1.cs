@@ -16,8 +16,8 @@ namespace TransportesArenas.DeliveryManager.App
     {
         private delegate void SafeCallDelegate(string text);
         private delegate void EmptyDelegate();
-        private int TotalDeliveries;
-        private int DeliveriesProcessed;
+        private int totalDeliveries;
+        private int deliveriesProcessed;
         public Form1()
         {
             InitializeComponent();
@@ -65,9 +65,14 @@ namespace TransportesArenas.DeliveryManager.App
         private void buttonProcess_Click(object sender, EventArgs e)
         {
             if (!IsValid())
+            {
                 MessageBox.Show("Informa los campos");
+                return;
+            }
 
-            DeliveriesProcessed = 0;
+            this.buttonProcess.Enabled = false;
+
+            deliveriesProcessed = 0;
 
             var resquest = new DelivaryManagerProcessRequest
             {
@@ -78,29 +83,32 @@ namespace TransportesArenas.DeliveryManager.App
 
             IDeliveryProcessManager deliveryProcessManager = new DeliveryProcessManager();
             deliveryProcessManager.TotalDeliveriesEvent += this.DeliveryProcessManager_TotalDeliveriesEvent;
-            deliveryProcessManager.StepEvent += DeliveryProcessManagerOnStepEvent;
+            deliveryProcessManager.StepEvent += this.DeliveryProcessManagerOnStepEvent;
+            deliveryProcessManager.ProcessEndedEvent += this.DeliveryProcessManagerOnProcessEndedEvent;
 
-            try
+            Task.Run(() =>
             {
-                Task.Run(() =>
-                {
-                    deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true); 
+                deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true);
+            }).ConfigureAwait(true);
+        }
 
-                }).ConfigureAwait(true);
-            }
-            catch (Exception exception)
+        private void DeliveryProcessManagerOnProcessEndedEvent()
+        {
+            if (this.buttonProcess.InvokeRequired)
             {
-                Console.WriteLine(exception);
-                throw;
+                var d = new EmptyDelegate(DeliveryProcessManagerOnProcessEndedEvent);
+                buttonProcess.Invoke(d);
             }
-
+            else
+            {
+                this.buttonProcess.Enabled = true;
+            }
         }
 
         private void DeliveryProcessManagerOnStepEvent()
         {
-            DeliveriesProcessed++;
-            this.WriteTextSafe($"{DeliveriesProcessed} / {TotalDeliveries}");
-
+            deliveriesProcessed++;
+            this.WriteTextSafe($"{deliveriesProcessed} / {totalDeliveries}");
         }
 
         private void WriteTextSafe(string text)
@@ -118,7 +126,7 @@ namespace TransportesArenas.DeliveryManager.App
 
         private void DeliveryProcessManager_TotalDeliveriesEvent(int deliveries)
         {
-            this.TotalDeliveries = deliveries;
+            this.totalDeliveries = deliveries;
         }
 
         private bool IsValid()
