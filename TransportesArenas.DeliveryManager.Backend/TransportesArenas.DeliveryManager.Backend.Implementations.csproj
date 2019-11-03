@@ -60,7 +60,10 @@
     <Compile Include="DelivaryManagerProcessRequest.cs" />
     <Compile Include="DeliveryProcessManager.cs" />
     <Compile Include="Entities\Delivery.cs" />
-    <Compile Include="ExcelReader\ExcelReader.cs" />
+    <Compile Include="ExcelManagement\ExcelReader\ExcelReader.cs" />
+    <Compile Include="ExcelManagement\Reporting\Commons\ExcelGeneratorBase.cs" />
+    <Compile Include="ExcelManagement\Reporting\Commons\ExcelReportBuilder.cs" />
+    <Compile Include="ExcelManagement\Reporting\DeliveriesMissingReport\DelireviesMissingReportExcelGenerator.cs" />
     <Compile Include="IoC\IoCBuilder.cs" />
     <Compile Include="PdfManager\PdfManager.cs" />
     <Compile Include="PdfManager\Wrapper\PdfCache.cs" />

@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\IDelivery.cs" />
-    <Compile Include="ExcelReader\IExcelReader.cs" />
+    <Compile Include="ExcelManagement\ExcelReader\IExcelReader.cs" />
+    <Compile Include="ExcelManagement\Reporting\Commons\IExcelReportBuilder.cs" />
+    <Compile Include="ExcelManagement\Reporting\DeliveriesMissingReport\IDelireviesMissingReportExcelGenerator.cs" />
     <Compile Include="IDelivaryManagerProcessRequest.cs" />
     <Compile Include="IDeliveryProcessManager.cs" />
     <Compile Include="PdfManager\IPdfManager.cs" />
