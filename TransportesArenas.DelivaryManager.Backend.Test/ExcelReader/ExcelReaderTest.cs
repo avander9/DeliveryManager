@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TransportesArenas.DeliveryManager.Backend.Implementations;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
 
-namespace TransportesArenas.DelivaryManager.Backend.Test.ExcelReader
+namespace TransportesArenas.DelivaryManager.Backend.Test
 {
     [TestClass]
     public class ExcelReaderTest
@@ -10,7 +11,7 @@ namespace TransportesArenas.DelivaryManager.Backend.Test.ExcelReader
 
         public ExcelReaderTest()
         {
-
+            this.excelReader = new ExcelReader();
         }
 
         [TestMethod]
