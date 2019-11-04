@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
 
@@ -6,20 +7,12 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 {
     public class PdfManager: IPdfManager
     {
-        private readonly string destinationFolder;
+        private string destinationFolder;
         private readonly IPdfWrapper pdfWrapper;
 
-        public PdfManager(string pdfSourceFile, string destinationFolder)
+        public PdfManager(IPdfWrapper pdfWrapper)
         {
-            this.destinationFolder = destinationFolder;
-            this.pdfWrapper = new PdfWrapper()
-                .Build(pdfSourceFile);
-        }
-
-        public PdfManager(IPdfWrapper wrapper, string destinationFolder)
-        {
-            this.destinationFolder = destinationFolder;
-            this.pdfWrapper = wrapper;
+            this.pdfWrapper = pdfWrapper ?? throw new ArgumentException(nameof(pdfWrapper));
         }
 
         public bool ProcessDelivery(string deliveryNumber, string driverName)
@@ -35,9 +28,10 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             return result.Found;
         }
 
-        public void SetParameters(string requestPdfFile, string requestOutputFolder)
+        public void SetParameters(string pdfSourceFile, string requestOutputFolder)
         {
-            throw new System.NotImplementedException();
+            this.destinationFolder = requestOutputFolder;
+            this.pdfWrapper.Build(pdfSourceFile);
         }
 
         private string GetDriverFolder(string driverName)

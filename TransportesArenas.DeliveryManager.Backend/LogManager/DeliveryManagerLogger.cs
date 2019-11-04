@@ -8,7 +8,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 {
     public class DeliveryManagerLogger : IDeliveryManagerLogger
     {
-        private ILog logger;
+        private readonly ILog logger;
 
         public DeliveryManagerLogger()
         {

@@ -11,17 +11,24 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 {
     public class DeliveryProcessManager : IDeliveryProcessManager
     {
-        private readonly IPdfManager pdfManager;
-        private DelireviesMissingReportExcelGenerator reportExcelGenerator;
-        private readonly IDeliveryManagerLogger logger;
         public event TotalDeliveriesEvent TotalDeliveriesEvent;
         public event StepEvent StepEvent;
         public event ProcessEndedEvent ProcessEndedEvent;
+
+        private readonly IPdfManager pdfManager;
+        private readonly DelireviesMissingReportExcelGenerator reportExcelGenerator;
+        private readonly IExcelReader excelReader;
+        private readonly IDeliveryManagerLogger logger;
         
-        public DeliveryProcessManager(IPdfManager pdfManager, IDeliveryManagerLogger logger)
+        public DeliveryProcessManager(IPdfManager pdfManager, 
+            IDeliveryManagerLogger logger, 
+            DelireviesMissingReportExcelGenerator reportExcelGenerator,
+            IExcelReader excelReader)
         {
             this.pdfManager = pdfManager;
             this.logger = logger;
+            this.reportExcelGenerator = reportExcelGenerator;
+            this.excelReader = excelReader;
         }
 
         public async Task RunAsync(IDelivaryManagerProcessRequest request)
@@ -30,7 +37,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             {
                 this.logger.LogMessage("Iniciando Proceso");
 
-                var deliveries = await new ExcelReader()
+                var deliveries = await this.excelReader
                     .GetDeliveriesAsync(request.ExcelFile)
                     .ConfigureAwait(true);
                 this.logger.LogMessage($"{deliveries.Count} albaranes leídos desde excel");
@@ -70,7 +77,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         {
             this.logger.LogMessage("Generando Reporte");
             var outputFile = Path.Combine(requestOutputFolder, GetNotProcessedExcelFileName());
-            this.reportExcelGenerator = new DelireviesMissingReportExcelGenerator();
+            //this.reportExcelGenerator = new DelireviesMissingReportExcelGenerator();
             this.reportExcelGenerator.GenerateReport(outputFile, deliveriesNotProcessed);
 
         }

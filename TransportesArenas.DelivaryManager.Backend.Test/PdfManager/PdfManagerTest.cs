@@ -15,7 +15,7 @@ namespace TransportesArenas.DelivaryManager.Backend.Test
         {
             var destinationFolder = @"c:\test\";
             this.wrapper = Substitute.For<IPdfWrapper>();
-            this.manager = new PdfManager(this.wrapper, destinationFolder);
+            this.manager = new PdfManager(this.wrapper);
         }
 
         [TestMethod]
