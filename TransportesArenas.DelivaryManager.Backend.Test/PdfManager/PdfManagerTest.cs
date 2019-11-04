@@ -38,10 +38,11 @@ namespace TransportesArenas.DelivaryManager.Backend.Test
                 Page = 1
             });
 
+            this.manager.SetParameters(@"c:\test", @"c:\test");
             this.manager.ProcessDelivery("TestDeliveryNumber", "TestDriver");
 
             this.wrapper.Received().FindValueAsync("TestDeliveryNumber");
-            this.wrapper.Received().SplitAndSave(fileName, 1);
+            this.wrapper.Received().SplitAndSave(Arg.Any<string>(), 1);
         }
     }
 }
