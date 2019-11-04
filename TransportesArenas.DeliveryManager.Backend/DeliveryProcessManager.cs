@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
-using log4net.Config;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
 
 namespace TransportesArenas.DeliveryManager.Backend.Implementations
@@ -16,18 +14,18 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         public event ProcessEndedEvent ProcessEndedEvent;
 
         private readonly IPdfManager pdfManager;
-        private readonly DelireviesMissingReportExcelGenerator reportExcelGenerator;
+        private readonly IExcelReportBuilder excelReportBuilder;
         private readonly IExcelReader excelReader;
         private readonly IDeliveryManagerLogger logger;
         
         public DeliveryProcessManager(IPdfManager pdfManager, 
             IDeliveryManagerLogger logger, 
-            DelireviesMissingReportExcelGenerator reportExcelGenerator,
+            IExcelReportBuilder excelReportBuilder,
             IExcelReader excelReader)
         {
             this.pdfManager = pdfManager;
             this.logger = logger;
-            this.reportExcelGenerator = reportExcelGenerator;
+            this.excelReportBuilder = excelReportBuilder;
             this.excelReader = excelReader;
         }
 
@@ -77,9 +75,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         {
             this.logger.LogMessage("Generando Reporte");
             var outputFile = Path.Combine(requestOutputFolder, GetNotProcessedExcelFileName());
-            //this.reportExcelGenerator = new DelireviesMissingReportExcelGenerator();
-            this.reportExcelGenerator.GenerateReport(outputFile, deliveriesNotProcessed);
-
+            this.excelReportBuilder.Build(outputFile, deliveriesNotProcessed);
         }
 
         private string GetNotProcessedExcelFileName()
@@ -106,7 +102,6 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         public void Dispose()
         {
             this.pdfManager?.Dispose();
-            this.reportExcelGenerator?.Dispose();
         }
     }
 }

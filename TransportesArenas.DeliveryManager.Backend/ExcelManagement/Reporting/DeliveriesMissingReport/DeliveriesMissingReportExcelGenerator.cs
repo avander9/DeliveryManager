@@ -6,17 +6,15 @@ using TransportesArenas.DeliveryManager.Backend.Interfaces;
 
 namespace TransportesArenas.DeliveryManager.Backend.Implementations
 {
-    public class DelireviesMissingReportExcelGenerator: ExcelGeneratorBase
+    public class DeliveriesMissingReportExcelGenerator: ExcelGeneratorBase
     {
         private List<IDelivery> deliveries;
         private ExcelWorksheet worksheet;
 
-        public void GenerateReport(string outputFile, List<IDelivery> deliveriesToPrint)
+        public void GenerateReport(ExcelWorksheet excelWorksheet, List<IDelivery> deliveriesToPrint)
         {
             this.deliveries = deliveriesToPrint;
-            var reportFileInfo = new FileInfo(outputFile);
-            this.ExcelPackage = new ExcelPackage(reportFileInfo);
-            this.worksheet = this.ExcelPackage.Workbook.Worksheets.Add("hoja 1");
+            this.worksheet = excelWorksheet;
             this.Generate();
         }
 
@@ -69,11 +67,6 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
                 this.worksheet.SetValue(this.CurrentRow, this.CurrentColumn, item.Weight);
             }
-        }
-
-        protected override void SaveFile()
-        {
-            this.ExcelPackage.Save();
         }
 
         protected override void PrintHeader()

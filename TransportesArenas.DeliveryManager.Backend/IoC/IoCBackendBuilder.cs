@@ -15,12 +15,13 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         private static void RegisterTypes(ContainerBuilder builder)
         {
             builder.RegisterType<DeliveryManagerLogger>().As<IDeliveryManagerLogger>();
-            builder.RegisterType<DelireviesMissingReportExcelGenerator>();
+            builder.RegisterType<DeliveriesMissingReportExcelGenerator>();
             builder.RegisterType<PdfManager>().As<IPdfManager>();
             builder.RegisterType<PdfWrapper>().As<IPdfWrapper>();
             builder.RegisterType<ExcelReader>().As<IExcelReader>();
             builder.RegisterType<DelivaryManagerProcessRequest>().As<IDelivaryManagerProcessRequest>();
             builder.RegisterType<DeliveryProcessManager>().As<IDeliveryProcessManager>();
+            builder.RegisterType<ExcelReportBuilder>().As<IExcelReportBuilder>();
         }
     }
 }
