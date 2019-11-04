@@ -21,16 +21,17 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
                 for (var row = 2; row <= rows; row++)
                 {
-                    var delivery = new Delivery();
-
-                    delivery.PickUpDate = Convert.ToDateTime(worksheet.Cells[row, 1].Value.ToString());
-                    delivery.DriverName = worksheet.Cells[row, 2].Value.ToString();
-                    delivery.DeliveryReference = worksheet.Cells[row, 3].Value.ToString();
-                    delivery.PickUpCompany = worksheet.Cells[row, 4].Value.ToString();
-                    delivery.PickUpCity = worksheet.Cells[row, 5].Value.ToString();
-                    delivery.DropOffCompany = worksheet.Cells[row, 6].Value.ToString();
-                    delivery.DropOffCity = worksheet.Cells[row, 7].Value.ToString();
-                    delivery.Weight = Convert.ToInt32(worksheet.Cells[row, 8].Value.ToString());
+                    var delivery = new Delivery
+                    {
+                        PickUpDate = Convert.ToDateTime(worksheet.Cells[row, 1].Value.ToString()),
+                        DriverName = worksheet.Cells[row, 2].Value.ToString(),
+                        DeliveryReference = worksheet.Cells[row, 3].Value.ToString(),
+                        PickUpCompany = worksheet.Cells[row, 4].Value.ToString(),
+                        PickUpCity = worksheet.Cells[row, 5].Value.ToString(),
+                        DropOffCompany = worksheet.Cells[row, 6].Value.ToString(),
+                        DropOffCity = worksheet.Cells[row, 7].Value.ToString(),
+                        Weight = Convert.ToInt32(worksheet.Cells[row, 8].Value.ToString())
+                    };
 
                     deliveries.Add(delivery);
                 }

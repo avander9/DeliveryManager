@@ -79,7 +79,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         public void Dispose()
         {
             this.reader?.Dispose();
-            this.cache.Clear();
+            this.cache?.Clear();
         }
     }
 }

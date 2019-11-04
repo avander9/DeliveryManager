@@ -51,7 +51,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
         public void Dispose()
         {
-            pdfWrapper?.Dispose();
+            this.pdfWrapper?.Dispose();
         }
     }
 }

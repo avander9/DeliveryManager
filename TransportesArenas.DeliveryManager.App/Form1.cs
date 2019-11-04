@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Autofac;
 using TransportesArenas.DeliveryManager.Backend.Implementations;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
+using IContainer = Autofac.IContainer;
 
 namespace TransportesArenas.DeliveryManager.App
 {
@@ -20,12 +21,12 @@ namespace TransportesArenas.DeliveryManager.App
         private delegate void EmptyDelegate();
         private int totalDeliveries;
         private int deliveriesProcessed;
-        private readonly ILifetimeScope scope;
+        private ILifetimeScope scope;
+        private readonly IContainer iocContainer;
 
         public Form1()
         {
-            var iocContainer = IoCBackendBuilder.Build();
-            this.scope = iocContainer.BeginLifetimeScope();
+            this.iocContainer = IoCBackendBuilder.Build();
 
             InitializeComponent();
             this.Text = $@"T.A Delivery Manager {Assembly.GetExecutingAssembly().GetName().Version}";
@@ -82,20 +83,25 @@ namespace TransportesArenas.DeliveryManager.App
 
             deliveriesProcessed = 0;
 
-            var resquest = this.scope.Resolve<IDelivaryManagerProcessRequest>();
-            resquest.ExcelFile = this.textBoxExcel.Text;
-            resquest.PdfFile = this.textBoxPdf.Text;
-            resquest.OutputFolder = this.textBoxOutput.Text;
-
-            var deliveryProcessManager = this.scope.Resolve<IDeliveryProcessManager>();
-            deliveryProcessManager.TotalDeliveriesEvent += this.DeliveryProcessManager_TotalDeliveriesEvent;
-            deliveryProcessManager.StepEvent += this.DeliveryProcessManagerOnStepEvent;
-            deliveryProcessManager.ProcessEndedEvent += this.DeliveryProcessManagerOnProcessEndedEvent;
-
-            Task.Run(() =>
+            using (this.scope = iocContainer.BeginLifetimeScope())
             {
-                deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true);
-            }).ConfigureAwait(true);
+                var resquest = this.scope.Resolve<IDelivaryManagerProcessRequest>();
+                resquest.ExcelFile = this.textBoxExcel.Text;
+                resquest.PdfFile = this.textBoxPdf.Text;
+                resquest.OutputFolder = this.textBoxOutput.Text;
+
+                var deliveryProcessManager = this.scope.Resolve<IDeliveryProcessManager>();
+                deliveryProcessManager.TotalDeliveriesEvent += this.DeliveryProcessManager_TotalDeliveriesEvent;
+                deliveryProcessManager.StepEvent += this.DeliveryProcessManagerOnStepEvent;
+                deliveryProcessManager.ProcessEndedEvent += this.DeliveryProcessManagerOnProcessEndedEvent;
+
+
+                Task.Run(() =>
+                {
+                    deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true);
+                }).ConfigureAwait(true);
+            }
+
         }
 
         private void DeliveryProcessManagerOnProcessEndedEvent()
