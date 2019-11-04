@@ -33,19 +33,13 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         {
             try
             {
-                this.logger.LogMessage("Iniciando Proceso");
-
-                var deliveries = await this.excelReader
-                    .GetDeliveriesAsync(request.ExcelFile)
-                    .ConfigureAwait(true);
-                this.logger.LogMessage($"{deliveries.Count} albaranes leídos desde excel");
-
+                var deliveries = await this.GetDeliveriesAsync(request);
                 var deliveriesNotProcessed = new List<IDelivery>();
+                
                 this.OnTotalDeliveriesEvent(deliveries.Count);
 
                 this.pdfManager.SetParameters(request.PdfFile, request.OutputFolder);
 
-                this.logger.LogMessage("Empezamos a procesar albaranes");
                 foreach (var delivery in deliveries)
                 {
                     this.OnStepEvent();
@@ -53,7 +47,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
                     if (!processed)
                     {
-                        this.logger.LogMessage($"Albarán {delivery.DeliveryReference} No encontrado");
+                        this.logger.LogMessage($"Albarán {delivery.DeliveryReference} No encontrado", LogType.Warning);
                         deliveriesNotProcessed.Add(delivery);
                     }
                 }
@@ -63,12 +57,18 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
                     this.GenerateReport(request.OutputFolder, deliveriesNotProcessed);
 
                 this.OnProcessEndedEvent();
-                this.logger.LogMessage("Proceso Finalizado");
             }
             catch (Exception exception)
             {
                 this.logger.LogException(exception.Message, exception);
             }
+        }
+
+        private async Task<List<IDelivery>> GetDeliveriesAsync(IDelivaryManagerProcessRequest request)
+        {
+            return await this.excelReader
+                .GetDeliveriesAsync(request.ExcelFile)
+                .ConfigureAwait(true);
         }
 
         private void GenerateReport(string requestOutputFolder, List<IDelivery> deliveriesNotProcessed)
@@ -86,17 +86,17 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 
         protected virtual void OnTotalDeliveriesEvent(int deliveries)
         {
-            TotalDeliveriesEvent?.Invoke(deliveries);
+            this.TotalDeliveriesEvent?.Invoke(deliveries);
         }
 
         protected virtual void OnStepEvent()
         {
-            StepEvent?.Invoke();
+            this.StepEvent?.Invoke();
         }
 
         protected virtual void OnProcessEndedEvent()
         {
-            ProcessEndedEvent?.Invoke();
+            this.ProcessEndedEvent?.Invoke();
         }
 
         public void Dispose()

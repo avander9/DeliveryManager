@@ -10,21 +10,17 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
     {
         private readonly ILog logger;
 
+        public DeliveryManagerLogger(ILog logger)
+        {
+            this.logger = logger;
+        }
+
         public DeliveryManagerLogger()
         {
             this.logger = LogManager.GetLogger(typeof(DeliveryProcessManager));
             //GlobalContext.Properties["LogFileName"] = $"LogMessage-{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}";
-            XmlConfigurator.Configure();;
+            XmlConfigurator.Configure();
         }
-
-        //public IDeliveryManagerLogger Build()
-        //{
-        //    this.logger = LogManager.GetLogger(typeof(DeliveryProcessManager));
-        //    //GlobalContext.Properties["LogFileName"] = $"LogMessage-{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}";
-        //    XmlConfigurator.Configure();
-
-        //    return this;
-        //}
 
         public void LogMessage(string message, LogType type = LogType.Debug)
         {
@@ -47,16 +43,15 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
                     break;
             }
         }
+        public void LogException(string message, Exception exception)
+        {
+            this.logger.FatalFormat(message, exception);
+        }
 
         private void LogDebugMessage(string message)
         {
             if(this.logger.IsDebugEnabled)
                 this.logger.Debug(message);
-        }
-
-        public void LogException(string message, Exception exception)
-        {
-            this.logger.Fatal(message, exception);
         }
     }
 }
