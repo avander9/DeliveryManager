@@ -10,14 +10,21 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
     {
         private ILog logger;
 
-        public IDeliveryManagerLogger Build()
+        public DeliveryManagerLogger()
         {
             this.logger = LogManager.GetLogger(typeof(DeliveryProcessManager));
             //GlobalContext.Properties["LogFileName"] = $"LogMessage-{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}";
-            XmlConfigurator.Configure();
-
-            return this;
+            XmlConfigurator.Configure();;
         }
+
+        //public IDeliveryManagerLogger Build()
+        //{
+        //    this.logger = LogManager.GetLogger(typeof(DeliveryProcessManager));
+        //    //GlobalContext.Properties["LogFileName"] = $"LogMessage-{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}";
+        //    XmlConfigurator.Configure();
+
+        //    return this;
+        //}
 
         public void LogMessage(string message, LogType type = LogType.Debug)
         {

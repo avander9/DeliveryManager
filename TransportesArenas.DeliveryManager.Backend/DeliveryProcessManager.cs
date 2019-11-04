@@ -11,16 +11,17 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
 {
     public class DeliveryProcessManager : IDeliveryProcessManager
     {
-        private IPdfManager pdfManager;
+        private readonly IPdfManager pdfManager;
         private DelireviesMissingReportExcelGenerator reportExcelGenerator;
         private readonly IDeliveryManagerLogger logger;
         public event TotalDeliveriesEvent TotalDeliveriesEvent;
         public event StepEvent StepEvent;
         public event ProcessEndedEvent ProcessEndedEvent;
         
-        public DeliveryProcessManager()
+        public DeliveryProcessManager(IPdfManager pdfManager, IDeliveryManagerLogger logger)
         {
-            this.logger = new DeliveryManagerLogger().Build();
+            this.pdfManager = pdfManager;
+            this.logger = logger;
         }
 
         public async Task RunAsync(IDelivaryManagerProcessRequest request)
@@ -37,7 +38,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
                 var deliveriesNotProcessed = new List<IDelivery>();
                 this.OnTotalDeliveriesEvent(deliveries.Count);
 
-                this.pdfManager = new PdfManager(request.PdfFile, request.OutputFolder);
+                this.pdfManager.SetParameters(request.PdfFile, request.OutputFolder);
 
                 this.logger.LogMessage("Empezamos a procesar albaranes");
                 foreach (var delivery in deliveries)

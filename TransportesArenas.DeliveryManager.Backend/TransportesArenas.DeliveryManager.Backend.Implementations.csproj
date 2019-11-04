@@ -67,7 +67,7 @@
     <Compile Include="ExcelManagement\Reporting\Commons\ExcelGeneratorBase.cs" />
     <Compile Include="ExcelManagement\Reporting\Commons\ExcelReportBuilder.cs" />
     <Compile Include="ExcelManagement\Reporting\DeliveriesMissingReport\DelireviesMissingReportExcelGenerator.cs" />
-    <Compile Include="IoC\IoCBuilder.cs" />
+    <Compile Include="IoC\IoCBackendBuilder.cs" />
     <Compile Include="LogManager\DeliveryManagerLogger.cs" />
     <Compile Include="PdfManager\PdfManager.cs" />
     <Compile Include="PdfManager\Wrapper\PdfCache.cs" />

@@ -35,6 +35,11 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             return result.Found;
         }
 
+        public void SetParameters(string requestPdfFile, string requestOutputFolder)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private string GetDriverFolder(string driverName)
         {
             var driverFolder = this.BuildDriverFolder(driverName);

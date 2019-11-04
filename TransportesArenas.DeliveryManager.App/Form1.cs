@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Autofac;
 using TransportesArenas.DeliveryManager.Backend.Implementations;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
 
@@ -19,8 +20,13 @@ namespace TransportesArenas.DeliveryManager.App
         private delegate void EmptyDelegate();
         private int totalDeliveries;
         private int deliveriesProcessed;
+        private readonly ILifetimeScope scope;
+
         public Form1()
         {
+            var iocContainer = IoCBackendBuilder.Build();
+            this.scope = iocContainer.BeginLifetimeScope();
+
             InitializeComponent();
             this.Text = $@"T.A Delivery Manager {Assembly.GetExecutingAssembly().GetName().Version}";
             this.openFileDialog1 = new OpenFileDialog();
@@ -76,14 +82,12 @@ namespace TransportesArenas.DeliveryManager.App
 
             deliveriesProcessed = 0;
 
-            var resquest = new DelivaryManagerProcessRequest
-            {
-                ExcelFile = this.textBoxExcel.Text,
-                PdfFile = this.textBoxPdf.Text,
-                OutputFolder = this.textBoxOutput.Text
-            };
+            var resquest = this.scope.Resolve<IDelivaryManagerProcessRequest>();
+            resquest.ExcelFile = this.textBoxExcel.Text;
+            resquest.PdfFile = this.textBoxPdf.Text;
+            resquest.OutputFolder = this.textBoxOutput.Text;
 
-            IDeliveryProcessManager deliveryProcessManager = new DeliveryProcessManager();
+            var deliveryProcessManager = this.scope.Resolve<IDeliveryProcessManager>();
             deliveryProcessManager.TotalDeliveriesEvent += this.DeliveryProcessManager_TotalDeliveriesEvent;
             deliveryProcessManager.StepEvent += this.DeliveryProcessManagerOnStepEvent;
             deliveryProcessManager.ProcessEndedEvent += this.DeliveryProcessManagerOnProcessEndedEvent;
