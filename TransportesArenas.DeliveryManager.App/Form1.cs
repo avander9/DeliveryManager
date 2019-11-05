@@ -9,13 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
+using MetroFramework.Forms;
 using TransportesArenas.DeliveryManager.Backend.Implementations;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
 using IContainer = Autofac.IContainer;
 
 namespace TransportesArenas.DeliveryManager.App
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MetroForm
     {
         private delegate void SafeCallDelegate(string text);
         private delegate void EmptyDelegate();
@@ -32,6 +33,7 @@ namespace TransportesArenas.DeliveryManager.App
             this.Text = $@"T.A Delivery Manager {Assembly.GetExecutingAssembly().GetName().Version}";
             this.openFileDialog1 = new OpenFileDialog();
             this.folderBrowserDialog1 = new FolderBrowserDialog();
+            this.metroProgressSpinner1.Visible = false;
         }
 
         private void buttonExcel_Click(object sender, EventArgs e)
@@ -80,7 +82,7 @@ namespace TransportesArenas.DeliveryManager.App
             }
 
             this.buttonProcess.Enabled = false;
-
+            this.metroProgressSpinner1.Visible = true;
             deliveriesProcessed = 0;
 
             using (this.scope = iocContainer.BeginLifetimeScope())
@@ -115,6 +117,17 @@ namespace TransportesArenas.DeliveryManager.App
             {
                 this.buttonProcess.Enabled = true;
             }
+
+            if (this.metroProgressSpinner1.InvokeRequired)
+            {
+                var d = new EmptyDelegate(DeliveryProcessManagerOnProcessEndedEvent);
+                metroProgressSpinner1.Invoke(d);
+            }
+            else
+            {
+                this.metroProgressSpinner1.Visible = false;
+            }
+
         }
 
         private void DeliveryProcessManagerOnStepEvent()
