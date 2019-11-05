@@ -160,10 +160,5 @@ namespace TransportesArenas.DeliveryManager.App
                 !string.IsNullOrEmpty(this.textBoxPdf.Text) &&
                     !string.IsNullOrEmpty(this.textBoxOutput.Text);
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
