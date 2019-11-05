@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -35,12 +36,12 @@
             this.textBoxExcel = new System.Windows.Forms.TextBox();
             this.textBoxOutput = new System.Windows.Forms.TextBox();
             this.textBoxPdf = new System.Windows.Forms.TextBox();
-            this.buttonExcel = new System.Windows.Forms.Button();
-            this.buttonOutput = new System.Windows.Forms.Button();
-            this.buttonPdf = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.buttonProcess = new System.Windows.Forms.Button();
             this.labelProcess = new System.Windows.Forms.Label();
+            this.buttonPdf = new System.Windows.Forms.Button();
+            this.buttonOutput = new System.Windows.Forms.Button();
+            this.buttonExcel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -95,35 +96,9 @@
             this.textBoxPdf.Size = new System.Drawing.Size(362, 20);
             this.textBoxPdf.TabIndex = 5;
             // 
-            // buttonExcel
-            // 
-            this.buttonExcel.Location = new System.Drawing.Point(428, 13);
-            this.buttonExcel.Name = "buttonExcel";
-            this.buttonExcel.Size = new System.Drawing.Size(43, 31);
-            this.buttonExcel.TabIndex = 6;
-            this.buttonExcel.UseVisualStyleBackColor = true;
-            this.buttonExcel.Click += new System.EventHandler(this.buttonExcel_Click);
-            // 
-            // buttonOutput
-            // 
-            this.buttonOutput.Location = new System.Drawing.Point(428, 90);
-            this.buttonOutput.Name = "buttonOutput";
-            this.buttonOutput.Size = new System.Drawing.Size(43, 31);
-            this.buttonOutput.TabIndex = 7;
-            this.buttonOutput.UseVisualStyleBackColor = true;
-            this.buttonOutput.Click += new System.EventHandler(this.buttonOutput_Click);
-            // 
-            // buttonPdf
-            // 
-            this.buttonPdf.Location = new System.Drawing.Point(428, 50);
-            this.buttonPdf.Name = "buttonPdf";
-            this.buttonPdf.Size = new System.Drawing.Size(43, 31);
-            this.buttonPdf.TabIndex = 8;
-            this.buttonPdf.UseVisualStyleBackColor = true;
-            this.buttonPdf.Click += new System.EventHandler(this.buttonPdf_Click);
-            // 
             // buttonProcess
             // 
+            this.buttonProcess.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonProcess.Location = new System.Drawing.Point(193, 155);
             this.buttonProcess.Name = "buttonProcess";
             this.buttonProcess.Size = new System.Drawing.Size(76, 31);
@@ -139,6 +114,39 @@
             this.labelProcess.Name = "labelProcess";
             this.labelProcess.Size = new System.Drawing.Size(0, 13);
             this.labelProcess.TabIndex = 11;
+            // 
+            // buttonPdf
+            // 
+            this.buttonPdf.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonPdf.Image = global::TransportesArenas.DeliveryManager.App.Properties.Resources.icons8_pdf_24;
+            this.buttonPdf.Location = new System.Drawing.Point(428, 50);
+            this.buttonPdf.Name = "buttonPdf";
+            this.buttonPdf.Size = new System.Drawing.Size(43, 31);
+            this.buttonPdf.TabIndex = 8;
+            this.buttonPdf.UseVisualStyleBackColor = true;
+            this.buttonPdf.Click += new System.EventHandler(this.buttonPdf_Click);
+            // 
+            // buttonOutput
+            // 
+            this.buttonOutput.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonOutput.Image = global::TransportesArenas.DeliveryManager.App.Properties.Resources.icons8_folder_24;
+            this.buttonOutput.Location = new System.Drawing.Point(428, 90);
+            this.buttonOutput.Name = "buttonOutput";
+            this.buttonOutput.Size = new System.Drawing.Size(43, 31);
+            this.buttonOutput.TabIndex = 7;
+            this.buttonOutput.UseVisualStyleBackColor = true;
+            this.buttonOutput.Click += new System.EventHandler(this.buttonOutput_Click);
+            // 
+            // buttonExcel
+            // 
+            this.buttonExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonExcel.Image = global::TransportesArenas.DeliveryManager.App.Properties.Resources.icons8_microsoft_excel_24;
+            this.buttonExcel.Location = new System.Drawing.Point(428, 13);
+            this.buttonExcel.Name = "buttonExcel";
+            this.buttonExcel.Size = new System.Drawing.Size(43, 31);
+            this.buttonExcel.TabIndex = 6;
+            this.buttonExcel.UseVisualStyleBackColor = true;
+            this.buttonExcel.Click += new System.EventHandler(this.buttonExcel_Click);
             // 
             // Form1
             // 
@@ -156,6 +164,9 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "TransportesArenas.DeliveryManager";
             this.ResumeLayout(false);
