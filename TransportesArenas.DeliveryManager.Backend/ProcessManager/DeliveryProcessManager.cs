@@ -12,6 +12,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         public event TotalDeliveriesEvent TotalDeliveriesEvent;
         public event StepEvent StepEvent;
         public event ProcessEndedEvent ProcessEndedEvent;
+        public event ProcessExceptionEvent ProcessExceptionEvent;
 
         private readonly IPdfManager pdfManager;
         private readonly IExcelReportBuilder excelReportBuilder;
@@ -61,6 +62,8 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             catch (Exception exception)
             {
                 this.logger.LogException(exception.Message, exception);
+                this.OnProcessExceptionEvent(exception.Message);
+                this.OnProcessEndedEvent();
             }
         }
 
@@ -99,9 +102,15 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             this.ProcessEndedEvent?.Invoke();
         }
 
+        protected virtual void OnProcessExceptionEvent(string exceptionMessage)
+        {
+            this.ProcessExceptionEvent?.Invoke(exceptionMessage);
+        }
+
         public void Dispose()
         {
             this.pdfManager?.Dispose();
+            this.excelReportBuilder?.Dispose();
         }
     }
 }
