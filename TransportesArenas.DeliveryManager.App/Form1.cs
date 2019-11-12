@@ -24,6 +24,8 @@ namespace TransportesArenas.DeliveryManager.App
         private int deliveriesProcessed;
         private ILifetimeScope scope;
         private readonly IContainer iocContainer;
+        private bool hasError = false;
+        private string errorMessage;
 
         public Form1()
         {
@@ -85,6 +87,23 @@ namespace TransportesArenas.DeliveryManager.App
             this.metroProgressSpinner1.Visible = true;
             deliveriesProcessed = 0;
 
+            BackgroundWorker backgroundWorker = new BackgroundWorker();
+            backgroundWorker.DoWork += BackgroundWorkerOnDoWork;
+            backgroundWorker.RunWorkerCompleted += BackgroundWorkerOnRunWorkerCompleted;
+
+            backgroundWorker.RunWorkerAsync();
+        }
+
+        private void BackgroundWorkerOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (hasError)
+            {
+                this.ShowError();
+            }
+        }
+
+        private void BackgroundWorkerOnDoWork(object sender, DoWorkEventArgs e)
+        {
             using (this.scope = iocContainer.BeginLifetimeScope())
             {
                 var resquest = this.scope.Resolve<IDelivaryManagerProcessRequest>();
@@ -96,14 +115,16 @@ namespace TransportesArenas.DeliveryManager.App
                 deliveryProcessManager.TotalDeliveriesEvent += this.DeliveryProcessManager_TotalDeliveriesEvent;
                 deliveryProcessManager.StepEvent += this.DeliveryProcessManagerOnStepEvent;
                 deliveryProcessManager.ProcessEndedEvent += this.DeliveryProcessManagerOnProcessEndedEvent;
+                deliveryProcessManager.ProcessExceptionEvent += DeliveryProcessManagerOnProcessExceptionEvent;
 
-
-                Task.Run(() =>
-                {
-                    deliveryProcessManager.RunAsync(resquest).ConfigureAwait(true);
-                }).ConfigureAwait(true);
+                deliveryProcessManager.RunAsync(resquest);
             }
+        }
 
+        private void ShowError()
+        {
+            ErrorForm errorForm = new ErrorForm(this.errorMessage);
+            errorForm.Show(this);
         }
 
         private void DeliveryProcessManagerOnProcessEndedEvent()
@@ -127,7 +148,6 @@ namespace TransportesArenas.DeliveryManager.App
             {
                 this.metroProgressSpinner1.Visible = false;
             }
-
         }
 
         private void DeliveryProcessManagerOnStepEvent()
@@ -152,6 +172,12 @@ namespace TransportesArenas.DeliveryManager.App
         private void DeliveryProcessManager_TotalDeliveriesEvent(int deliveries)
         {
             this.totalDeliveries = deliveries;
+        }
+
+        private void DeliveryProcessManagerOnProcessExceptionEvent(string exceptionMessage)
+        {
+            this.hasError = true;
+            this.errorMessage = exceptionMessage;
         }
 
         private bool IsValid()
