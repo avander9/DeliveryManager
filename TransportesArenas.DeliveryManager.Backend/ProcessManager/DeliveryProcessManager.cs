@@ -57,6 +57,8 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
                 if (deliveriesNotProcessed.Any())
                     this.GenerateReport(request.OutputFolder, deliveriesNotProcessed);
 
+                this.PrintNotProcessedPages();
+
                 this.OnProcessEndedEvent();
             }
             catch (Exception exception)
@@ -65,6 +67,11 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
                 this.OnProcessExceptionEvent(exception.Message);
                 this.OnProcessEndedEvent();
             }
+        }
+
+        private void PrintNotProcessedPages()
+        {
+            this.pdfManager.PrintNotProcessedPages();
         }
 
         private async Task<List<IDelivery>> GetDeliveriesAsync(IDelivaryManagerProcessRequest request)
@@ -77,14 +84,14 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         private void GenerateReport(string requestOutputFolder, List<IDelivery> deliveriesNotProcessed)
         {
             this.logger.LogMessage("Generando Reporte");
-            var outputFile = Path.Combine(requestOutputFolder, GetNotProcessedExcelFileName());
+            var outputFile = Path.Combine(requestOutputFolder, this.GetNotProcessedExcelFileName());
             this.excelReportBuilder.Build(outputFile, deliveriesNotProcessed);
         }
 
         private string GetNotProcessedExcelFileName()
         {
             return
-                $"No Procesados {DateTime.Now.Day}-{DateTime.Now.Month}-{DateTime.Now.Year}-{DateTime.Now.Hour}{DateTime.Now.Minute}.xlsx";
+                $"No Encontrados {DateTime.Now.Day}-{DateTime.Now.Month}-{DateTime.Now.Year}-{DateTime.Now.Hour}{DateTime.Now.Minute}.xlsx";
         }
 
         protected virtual void OnTotalDeliveriesEvent(int deliveries)

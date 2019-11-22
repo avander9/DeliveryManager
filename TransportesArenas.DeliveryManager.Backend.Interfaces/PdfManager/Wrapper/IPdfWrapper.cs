@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace TransportesArenas.DeliveryManager.Backend.Interfaces
@@ -9,5 +10,6 @@ namespace TransportesArenas.DeliveryManager.Backend.Interfaces
         string ReadPage(int pageNumber);
         IPdfResult FindValueAsync(string value);
         void SplitAndSave(string outputFile, int pageNumber);
+        void ExtractNotProcessedPages(string outputFile);
     }
 }

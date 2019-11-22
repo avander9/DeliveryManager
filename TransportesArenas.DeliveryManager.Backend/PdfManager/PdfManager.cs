@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using TransportesArenas.DeliveryManager.Backend.Interfaces;
@@ -32,6 +33,18 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
         {
             this.destinationFolder = requestOutputFolder;
             this.pdfWrapper.Build(pdfSourceFile);
+        }
+
+        public void PrintNotProcessedPages()
+        {
+            var outputFile = Path.Combine(this.destinationFolder, this.GetNotProcessedFileName());
+            this.pdfWrapper.ExtractNotProcessedPages(outputFile);
+        }
+
+        private string GetNotProcessedFileName()
+        {
+            return
+                $"No Procesados {DateTime.Now.Day}-{DateTime.Now.Month}-{DateTime.Now.Year}-{DateTime.Now.Hour}{DateTime.Now.Minute}.pdf";
         }
 
         private string GetDriverFolder(string driverName)

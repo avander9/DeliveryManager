@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PdfManager\Mapper\PdfManagerMapper.cs" />
     <Compile Include="ProcessManager\Request\DelivaryManagerProcessRequest.cs" />
     <Compile Include="ProcessManager\DeliveryProcessManager.cs" />
     <Compile Include="Entities\Delivery.cs" />

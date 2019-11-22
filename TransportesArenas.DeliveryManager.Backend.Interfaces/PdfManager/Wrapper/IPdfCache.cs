@@ -4,5 +4,6 @@
     {
         int Page { get; set; }
         string Content { get; set; }
+        bool WasProcessed { get; set; }
     }
 }

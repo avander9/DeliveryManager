@@ -50,6 +50,7 @@
     <Compile Include="LogManager\IDeliveryManagerLogger.cs" />
     <Compile Include="LogManager\LogType.cs" />
     <Compile Include="PdfManager\IPdfManager.cs" />
+    <Compile Include="PdfManager\Mapper\IPdfManagerMapper.cs" />
     <Compile Include="PdfManager\Wrapper\IPdfCache.cs" />
     <Compile Include="PdfManager\Wrapper\IPdfWrapper.cs" />
     <Compile Include="PdfManager\Results\IPdfResult.cs" />
