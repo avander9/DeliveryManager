@@ -19,6 +19,7 @@ namespace TransportesArenas.DeliveryManager.Backend.Implementations
             builder.RegisterType<DeliveriesMissingReportExcelGenerator>();
             builder.RegisterType<PdfManager>().As<IPdfManager>();
             builder.RegisterType<PdfWrapper>().As<IPdfWrapper>();
+            builder.RegisterType<PdfManagerMapper>().As<IPdfManagerMapper>();
             
             builder.RegisterType<DelivaryManagerProcessRequest>().As<IDelivaryManagerProcessRequest>();
             builder.RegisterType<DeliveryProcessManager>().As<IDeliveryProcessManager>();
