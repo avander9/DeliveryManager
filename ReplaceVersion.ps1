@@ -1,6 +1,6 @@
 ﻿function getVersion()
 {
-    $b = '1.0.100.50'
+    $b = '1.0.200.00'
     Write-Host "Version found: $b"
     return $b
 }
