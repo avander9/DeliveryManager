@@ -18,7 +18,6 @@ function SetVersion ($version)
             Foreach-Object{
                 $fullName = $_.FullName
 
-                #if ($fullName -notmatch '\\Shell\\Properties\\') {
                 if ($fullName -notmatch '\\publish\\') {
                     $regexp = 'Version\(\"[\d\.]+\"\)';
                     $repstr = 'Version("' + $version + '")';
